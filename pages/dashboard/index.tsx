@@ -1,6 +1,6 @@
-import { Layout } from '@/components/layout'
 import { dashboardConfig } from '@/features/dashboard/dashboard.config'
 import { DashboardPage } from '@/features/dashboard/dashboard.page'
+import { DashboardLayout } from '@/layouts/dashboard'
 import { getServerTranslations } from '@/libs/i18n'
 import type { Page } from '@/types/next'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
@@ -25,7 +25,7 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
 }
 
 DashboardRoute.getLayout = (page: React.ReactNode) => {
-  return <Layout>{page}</Layout>
+  return <DashboardLayout>{page}</DashboardLayout>
 }
 
 export default DashboardRoute

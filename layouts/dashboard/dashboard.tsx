@@ -3,7 +3,7 @@ import { AppShell, useMantineTheme } from '@mantine/core'
 import { NavBar } from '@/components/navbar'
 import { SideBar } from '@/components/sidebar'
 
-export const Layout = ({ children }: React.PropsWithChildren) => {
+export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   const theme = useMantineTheme()
   const [sidebarOpened, setSidebarOpened] = useState(false)
 

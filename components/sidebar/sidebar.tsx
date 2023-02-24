@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Box, Navbar, NavLink, ScrollArea } from '@mantine/core'
 import { useViewportSize } from '@mantine/hooks'
-import { navigationLinks } from '@/config/navigationLinks'
+import { navigationLinks } from '@/configs/navigationLinks'
 import { useLocale } from '@/hooks/useLocale'
 // import { layoutConfig } from '../layout/layout.config'
 import { useSidebarStyles } from './sidebar.styles'
-import type { NavigationLink } from '@/config/navigationLinks'
+import type { NavigationLink } from '@/configs/navigationLinks'
 
 interface Props {
   opened: boolean
