@@ -8,8 +8,7 @@ const i18nConfig = {
     locales: ['en', 'ru'],
     localeDetection: false
   },
-  strictMode: true,
-  serializeConfig: false,
+  debug: process.env.NODE_ENV === 'development',
   reloadOnPrerender: process.env.NODE_ENV === 'development',
   localePath:
     typeof window === 'undefined'

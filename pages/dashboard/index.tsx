@@ -1,13 +1,13 @@
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { dashboardConfig } from '@/features/dashboard/dashboard.config'
 import { DashboardPage } from '@/features/dashboard/dashboard.page'
 import { DashboardLayout } from '@/layouts/dashboard'
-import { getServerTranslations } from '@/libs/i18n'
-import type { Page } from '@/types/next'
+import type { PageLayoutProps } from 'next'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 interface Props {}
 
-const DashboardRoute: Page<Props> = (
+const DashboardRoute: PageLayoutProps<Props> = (
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) => {
   return <DashboardPage />
@@ -16,7 +16,7 @@ const DashboardRoute: Page<Props> = (
 export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   return {
     props: {
-      ...(await getServerTranslations(
+      ...(await serverSideTranslations(
         ctx.locale!,
         dashboardConfig.i18nNamespaces
       ))

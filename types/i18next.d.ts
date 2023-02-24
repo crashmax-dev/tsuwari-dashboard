@@ -1,10 +1,11 @@
 /**
- * Types augmentation for translation keys to allow to typecheck
- * and suggesting keys to the t function. In case it's too slow
- * you can opt out by commenting the following code.
- * @link https://react.i18next.com/latest/typescript
+ * If you want to enable locale keys typechecking and enhance IDE experience.
+ *
+ * Requires `resolveJsonModule:true` in your tsconfig.json.
+ *
+ * @link https://www.i18next.com/overview/typescript
  */
-import 'react-i18next'
+import 'i18next'
 import type { I18nResources } from '@/locales'
 
 declare module 'i18next' {

@@ -8,17 +8,19 @@ specifiers:
   '@mantine/hooks': 5.10.4
   '@mantine/next': 5.10.4
   '@tabler/icons': 1.119.0
+  '@tanstack/query-core': ^4.24.10
   '@types/node': 18.14.1
   '@types/react': 18.0.28
   '@types/react-dom': 18.0.11
   cookies-next: 2.1.1
   country-flag-icons: 1.5.5
   i18next: 22.4.10
+  jotai: ^2.0.2
+  jotai-tanstack-query: ^0.5.0
   next: 13.2.0
   next-i18next: ^13.1.5
   react: 18.2.0
   react-dom: 18.2.0
-  react-i18next: 12.2.0
   typescript: 4.9.5
 
 dependencies:
@@ -28,14 +30,16 @@ dependencies:
   '@mantine/hooks': 5.10.4_react@18.2.0
   '@mantine/next': 5.10.4_6nfw4vjdbvszenmdlrj2ur66pe
   '@tabler/icons': 1.119.0_biqbaboplfbrettd7655fr4n2y
+  '@tanstack/query-core': 4.24.10
   cookies-next: 2.1.1
   country-flag-icons: 1.5.5
   i18next: 22.4.10
+  jotai: 2.0.2_react@18.2.0
+  jotai-tanstack-query: 0.5.0_gi3sdpyvtovzotfm5fkwwzcisi
   next: 13.2.0_6m24vuloj5ihw4zc5lbsktc4fu
   next-i18next: 13.1.5_d52olaavo2uppgivqzbbr3wsem
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
-  react-i18next: 12.2.0_3yopsigl4h4eb2nqrqfsy65uwi
 
 devDependencies:
   '@crashmax/prettier-config': 3.1.0_za6dmrbiogn3z6m2plsv3qsi6m
@@ -783,6 +787,10 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
+  /@tanstack/query-core/4.24.10:
+    resolution: {integrity: sha512-2QywqXEAGBIUoTdgn1lAB4/C8QEqwXHj2jrCLeYTk2xVGtLiPEUD8jcMoeB2noclbiW2mMt4+Fq7fZStuz3wAQ==}
+    dev: false
+
   /@types/cookie/0.4.1:
     resolution: {integrity: sha512-XW/Aa8APYr6jSVVA1y/DEIZX0/GMKLEVekNG727R8cs56ahETkRAy/3DR7+fJyh7oUgGwNQaRfXCun0+KbWY7Q==}
     dev: false
@@ -1149,6 +1157,28 @@ packages:
   /javascript-natural-sort/0.7.1:
     resolution: {integrity: sha512-nO6jcEfZWQXDhOiBtG2KvKyEptz7RVbpGP4vTD2hLBdmNQSsCiicO2Ioinv6UI4y9ukqnBpy+XZ9H6uLNgJTlw==}
     dev: true
+
+  /jotai-tanstack-query/0.5.0_gi3sdpyvtovzotfm5fkwwzcisi:
+    resolution: {integrity: sha512-UXfI+I+bdrYL3R1o+OrADY9diizQD8/yqi+DJswOisKGzvNJs1FUIXi9ugtWVR9cjAfRuroG6fQzJhuNyUJ70g==}
+    peerDependencies:
+      '@tanstack/query-core': '*'
+      jotai: '>=1.11.0'
+    dependencies:
+      '@tanstack/query-core': 4.24.10
+      jotai: 2.0.2_react@18.2.0
+    dev: false
+
+  /jotai/2.0.2_react@18.2.0:
+    resolution: {integrity: sha512-0yOked08Swa84LUbBjtj7ZLZrE05n3u50rHeZ+bsT86thUjcy0kFgQz9GmEWhYbQDFoT1G8Ww6edSj/MBJHO4A==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      react: '>=17.0.0'
+    peerDependenciesMeta:
+      react:
+        optional: true
+    dependencies:
+      react: 18.2.0
+    dev: false
 
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}

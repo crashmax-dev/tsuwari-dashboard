@@ -23,7 +23,7 @@ export interface I18nResources {
   layout: typeof layout
   moderation: typeof moderation
   settings: typeof settings
-  songRequestSettings: typeof songRequestSettings
+  'song-request-settings': typeof songRequestSettings
   timers: typeof timers
   variables: typeof variables
 }

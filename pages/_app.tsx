@@ -5,11 +5,11 @@ import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 import { getCookie, setCookie } from 'cookies-next'
 import i18nConfig from '../next-i18next.config'
-import type { AppProps } from '@/types/next'
 import type { ColorScheme } from '@mantine/core'
 import type { GetServerSidePropsContext } from 'next'
+import type { AppLayoutProps } from 'next/app'
 
-function App(props: AppProps) {
+function App(props: AppLayoutProps) {
   const { Component, pageProps } = props
   const getLayout = Component.getLayout ?? ((page) => page)
 

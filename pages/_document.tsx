@@ -8,10 +8,10 @@ export default class _Document extends Document {
   static getInitialProps = getInitialProps
 
   render() {
-    const locale = this.props.locale ?? i18n.defaultLocale
+    const currentLocale = this.props.__NEXT_DATA__.locale ?? i18n.defaultLocale
 
     return (
-      <Html lang={locale}>
+      <Html lang={currentLocale}>
         <Head />
         <body>
           <Main />

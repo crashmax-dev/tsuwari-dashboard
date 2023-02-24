@@ -30,42 +30,42 @@ export function SideBar(props: Props) {
     }
   }
 
-  const createNavLink = (item: NavigationLink, isSubPage = false) => (
-    <NavLink
-      key={item.label}
-      active={computeActive(item)}
-      label={item.label}
-      className={isSubPage ? classes.link : ''}
-      defaultOpened={item.subPages && router.asPath.startsWith(item.path)}
-      icon={
-        item.icon ? (
-          <item.icon
-            size={16}
-            stroke={1.5}
-          />
-        ) : (
-          ''
-        )
-      }
-      sx={{ width: '100%' }}
-      component="a"
-      href={`/dashboard/${currentLocale}${
-        item.path ? item.path : item.label.toLowerCase()
-      }`}
-      onClick={(event) => {
-        event.preventDefault()
-        if (item.subPages) return
-        props.setOpened(false)
-        router.push(
-          item.path ? item.path : item.label.toLowerCase(),
-          undefined,
-          { locale: currentLocale }
-        )
-      }}
-    >
-      {item.subPages && item.subPages.map((p) => createNavLink(p, true))}
-    </NavLink>
-  )
+  const createNavLink = (item: NavigationLink, isSubPage = false) => {
+    const href = item.path
+      ? `dashboard/${item.path ? item.path : item.label.toLowerCase()}`
+      : ''
+
+    return (
+      <NavLink
+        key={item.label}
+        active={computeActive(item)}
+        label={item.label}
+        className={isSubPage ? classes.link : ''}
+        defaultOpened={item.subPages && router.asPath.startsWith(item.path)}
+        icon={
+          item.icon ? (
+            <item.icon
+              size={16}
+              stroke={1.5}
+            />
+          ) : (
+            ''
+          )
+        }
+        sx={{ width: '100%' }}
+        component="a"
+        href={href}
+        onClick={(event) => {
+          event.preventDefault()
+          if (item.subPages) return
+          props.setOpened(false)
+          router.push(href, undefined, { locale: currentLocale })
+        }}
+      >
+        {item.subPages && item.subPages.map((p) => createNavLink(p, true))}
+      </NavLink>
+    )
+  }
 
   useEffect(() => {
     setLinks(navigationLinks.map((item, i) => createNavLink(item)))
