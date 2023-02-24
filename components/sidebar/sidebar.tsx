@@ -31,9 +31,7 @@ export function SideBar(props: Props) {
   }
 
   const createNavLink = (item: NavigationLink, isSubPage = false) => {
-    const href = item.path
-      ? `dashboard/${item.path ? item.path : item.label.toLowerCase()}`
-      : ''
+    const href = `/dashboard${item.path === '/' ? '' : item.path}`
 
     return (
       <NavLink
