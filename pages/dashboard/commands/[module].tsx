@@ -17,6 +17,9 @@ const CustomCommandsRoute: PageLayoutProps<Props> = (
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+  // TODO: prefetching data
+  const commandsModule = ctx.query.module as string
+
   return {
     props: {
       ...(await serverSideTranslations(

@@ -1,7 +1,8 @@
 import { useTranslation } from 'next-i18next'
-import { Box, Text } from '@mantine/core'
+import { Suspense, useRef } from 'react'
+import { Box, Button, Loader, NumberInput, Text } from '@mantine/core'
 import { atom, useAtom } from 'jotai'
-import { atomsWithQuery } from 'jotai-tanstack-query'
+import { atomWithCache } from 'jotai-cache'
 import { commandsConfig } from './commands.config'
 
 interface User {
@@ -9,23 +10,51 @@ interface User {
   name: string
 }
 
-const idAtom = atom(1)
-const [userAtom] = atomsWithQuery((get) => ({
-  queryKey: ['users', get(idAtom)],
-  queryFn: async ({ queryKey: [, id] }) => {
-    const res = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
-    return (await res.json()) as User
-  }
-}))
+const userIdAtom = atom(1)
+const cachedAtom = atomWithCache<Promise<User>>(async (get) => {
+  const id = get(userIdAtom)
+  const response = await fetch(
+    `https://jsonplaceholder.typicode.com/users/${id}`
+  )
+  return response.json()
+})
 
 export const CommandsPage = () => {
   const { t } = useTranslation(commandsConfig.i18nNamespaces)
-  const [user] = useAtom(userAtom)
 
   return (
     <Box>
       <Text>{t('commands:title')}</Text>
-      <pre>{JSON.stringify(user, null, 2)}</pre>
+      <UpdateUser />
+      <Suspense fallback={<Loader />}>
+        <User />
+      </Suspense>
+    </Box>
+  )
+}
+
+function User() {
+  const [user] = useAtom(cachedAtom)
+  return <pre>{JSON.stringify(user, null, 2)}</pre>
+}
+
+function UpdateUser() {
+  const refInput = useRef<HTMLInputElement | null>(null)
+  const [userId, setUserId] = useAtom(userIdAtom)
+
+  return (
+    <Box>
+      <NumberInput
+        value={userId}
+        ref={refInput}
+      ></NumberInput>
+      <Button
+        onClick={() => {
+          setUserId(Number(refInput.current?.value))
+        }}
+      >
+        Set userId
+      </Button>
     </Box>
   )
 }
