@@ -7,6 +7,14 @@ const nextConfig = {
   i18n: nextI18nConfig.i18n,
   experimental: {
     esmExternals: true
+  },
+  rewrites() {
+    return [
+      {
+        source: '/',
+        destination: '/dashboard'
+      }
+    ]
   }
 }
 

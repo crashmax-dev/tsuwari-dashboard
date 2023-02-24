@@ -1,24 +1,17 @@
 import { appWithTranslation } from 'next-i18next'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import {
-  ColorScheme,
-  ColorSchemeProvider,
-  MantineProvider
-} from '@mantine/core'
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 import { getCookie, setCookie } from 'cookies-next'
 import i18nConfig from '../next-i18next.config'
+import type { AppProps } from '@/types/next'
+import type { ColorScheme } from '@mantine/core'
 import type { GetServerSidePropsContext } from 'next'
-import type { AppProps } from 'next/app'
 
-interface Props extends AppProps {
-  locale: string
-  colorScheme: ColorScheme
-}
-
-function App(props: Props) {
+function App(props: AppProps) {
   const { Component, pageProps } = props
+  const getLayout = Component.getLayout ?? ((page) => page)
 
   const preferenceColorScheme = useColorScheme(undefined, {
     getInitialValueInEffect: true
@@ -53,7 +46,6 @@ function App(props: Props) {
           href="/tsuwari-logo.svg"
         />
       </Head>
-
       <ColorSchemeProvider
         colorScheme={colorScheme}
         toggleColorScheme={toggleColorScheme}
@@ -63,7 +55,7 @@ function App(props: Props) {
           withGlobalStyles
           withNormalizeCSS
         >
-          <Component {...pageProps} />
+          {getLayout(<Component {...pageProps} />)}
         </MantineProvider>
       </ColorSchemeProvider>
     </>
