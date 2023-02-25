@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { commandsConfig } from '@/features/commands/commands.config'
-import { CommandsPage } from '@/features/commands/commands.page'
+import { commandsConfig } from '@/features/dashboard/commands'
+import { CommandsPage } from '@/features/dashboard/commands'
 import { DashboardLayout } from '@/layouts/dashboard'
 import type {
   GetServerSideProps,

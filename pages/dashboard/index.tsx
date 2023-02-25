@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { dashboardConfig } from '@/features/dashboard/dashboard.config'
-import { DashboardPage } from '@/features/dashboard/dashboard.page'
+import { dashboardConfig } from '@/features/dashboard'
+import { DashboardPage } from '@/features/dashboard'
 import { DashboardLayout } from '@/layouts/dashboard'
 import type { PageLayoutProps } from 'next'
 import type { GetStaticProps, InferGetStaticPropsType } from 'next'

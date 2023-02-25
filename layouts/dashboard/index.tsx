@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { AppShell, useMantineTheme } from '@mantine/core'
-import { NavBar } from '@/components/navbar'
-import { SideBar } from '@/components/sidebar'
+import { NavBar } from '@/layouts/dashboard/components/navbar'
+import { SideBar } from '@/layouts/dashboard/components/sidebar'
 
 export const DashboardLayout = ({ children }: React.PropsWithChildren) => {
   const theme = useMantineTheme()

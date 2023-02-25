@@ -3,11 +3,11 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Box, Navbar, NavLink, ScrollArea } from '@mantine/core'
 import { useViewportSize } from '@mantine/hooks'
-import { navigationLinks } from '@/configs/navigationLinks'
+import { dashboardConfig } from '@/features/dashboard'
 import { useLocale } from '@/hooks/useLocale'
 // import { layoutConfig } from '../layout/layout.config'
 import { useSidebarStyles } from './sidebar.styles'
-import type { NavigationLink } from '@/configs/navigationLinks'
+import type { NavigationLink } from '@/features/dashboard'
 
 interface Props {
   opened: boolean
@@ -23,7 +23,7 @@ export function SideBar(props: Props) {
   // const { t } = useTranslation(layoutConfig.i18nNamespaces);
 
   const computeActive = (item: NavigationLink) => {
-    if (item.subPages) {
+    if (item.subLinks) {
       return router.asPath.startsWith(item.path)
     } else {
       return item.path === router.asPath
@@ -39,7 +39,7 @@ export function SideBar(props: Props) {
         active={computeActive(item)}
         label={item.label}
         className={isSubPage ? classes.link : ''}
-        defaultOpened={item.subPages && router.asPath.startsWith(item.path)}
+        defaultOpened={item.subLinks && router.asPath.startsWith(item.path)}
         icon={
           item.icon ? (
             <item.icon
@@ -55,18 +55,20 @@ export function SideBar(props: Props) {
         href={href}
         onClick={(event) => {
           event.preventDefault()
-          if (item.subPages) return
+          if (item.subLinks) return
           props.setOpened(false)
           router.push(href, undefined, { locale: currentLocale })
         }}
       >
-        {item.subPages && item.subPages.map((p) => createNavLink(p, true))}
+        {item.subLinks && item.subLinks.map((p) => createNavLink(p, true))}
       </NavLink>
     )
   }
 
   useEffect(() => {
-    setLinks(navigationLinks.map((item, i) => createNavLink(item)))
+    setLinks(
+      dashboardConfig.navigationLinks.map((item, i) => createNavLink(item))
+    )
   }, [router])
 
   return (
