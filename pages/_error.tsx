@@ -5,9 +5,9 @@ const Error = () => {
   return <div>Not found</div>
 }
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+export const getStaticProps: GetStaticProps = async (ctx) => ({
   props: {
-    ...(await serverSideTranslations(locale!, ['common', 'layout']))
+    ...(await serverSideTranslations(ctx.locale!, ['common', 'layout']))
   }
 })
 

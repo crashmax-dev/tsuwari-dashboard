@@ -6,7 +6,8 @@ const nextConfig = {
   swcMinify: true,
   i18n: nextI18nConfig.i18n,
   experimental: {
-    esmExternals: true
+    esmExternals: true,
+    appDir: false
   }
 }
 

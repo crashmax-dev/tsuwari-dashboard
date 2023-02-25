@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react'
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
 import { getCookie, setCookie } from 'cookies-next'
+import { Provider } from 'jotai'
+import { NotificationsProvider } from '@/libs/notification/provider'
 import i18nConfig from '../next-i18next.config'
 import type { ColorScheme } from '@mantine/core'
 import type { GetServerSidePropsContext } from 'next'
@@ -55,7 +57,9 @@ function App(props: AppLayoutProps) {
           withGlobalStyles
           withNormalizeCSS
         >
-          {getLayout(<Component {...pageProps} />)}
+          <NotificationsProvider>
+            <Provider>{getLayout(<Component {...pageProps} />)}</Provider>
+          </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
