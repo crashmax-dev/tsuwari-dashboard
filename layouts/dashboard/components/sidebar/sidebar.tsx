@@ -14,7 +14,7 @@ interface Props {
   setOpened: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function SideBar(props: Props) {
+export const SideBar = (props: Props) => {
   const [links, setLinks] = useState<JSX.Element[]>([])
   const { classes } = useSidebarStyles()
   const { currentLocale } = useLocale()

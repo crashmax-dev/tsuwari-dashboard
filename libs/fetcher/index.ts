@@ -1,12 +1,10 @@
-// import { errorNotification } from '@/libs/notification'
-
-import { apiKey, baseUrl, isDev, isSSR } from '@/app/config'
+import { accessTokenKey, baseUrl, isDev, isSsr } from '@/app/config'
+import { deleteCookie } from '@/libs/cookie'
+import { errorNotification } from '@/libs/notification'
 import { combineHeaders } from './combineHeaders'
 import { combineURLs } from './combineURLs'
 import { FetcherError } from './FetcherError'
-
-// Local storage key
-const ACCESS_TOKEN_KEY = 'access_token'
+import { refreshAccessToken } from './refreshAccessToken'
 
 /**
  * Wrapper for fetch function with bearer token authorization
@@ -19,8 +17,8 @@ export const authFetch = async (
   // to refresh the token
   let isTryiedRefresh = false
 
-  let accessToken = localStorage.getItem(ACCESS_TOKEN_KEY)
-  if (accessToken == null) {
+  let accessToken = localStorage.getItem(accessTokenKey)
+  if (accessToken === null) {
     const result = await refreshAccessToken()
     if (typeof result !== 'string') return result
 
@@ -31,7 +29,7 @@ export const authFetch = async (
   const execute = async (token: string) => {
     return await fetch(url, {
       ...options,
-      headers: combineHeaders(options?.headers!, {
+      headers: combineHeaders(options?.headers ?? {}, {
         Authorization: `Bearer ${token}`
       })
     })
@@ -41,7 +39,7 @@ export const authFetch = async (
 
   if (response.status == 401 && !isTryiedRefresh) {
     const result = await refreshAccessToken()
-    if (typeof result != 'string') return result
+    if (typeof result !== 'string') return result
 
     accessToken = result
     response = await execute(accessToken)
@@ -50,53 +48,32 @@ export const authFetch = async (
   return response
 }
 
-/**
- * @returns Access token on success or Reponse object on error
- */
-const refreshAccessToken = async (): Promise<Response | string> => {
-  const response = await fetch('/api/auth/token', { method: 'POST' })
-
-  if (!response.ok) {
-    localStorage.removeItem(ACCESS_TOKEN_KEY)
-    return response
-  }
-
-  const { accessToken } = (await response.json()) as { accessToken: string }
-  localStorage.setItem(ACCESS_TOKEN_KEY, accessToken)
-  return accessToken
-}
-
-const createFetcher = (
-  fetcher: typeof fetch,
-  baseUrl?: string | null,
-  apiKey?: string
-) => {
+const createFetcher = (fetcher: typeof fetch, baseUrl?: string | null) => {
   return async <T = any>(url: string, options?: RequestInit) => {
-    if (isSSR) return
+    if (isSsr) return
 
-    const input = baseUrl ? combineURLs(baseUrl, url) : url
-    const init = apiKey
-      ? {
-          ...options,
-          headers: combineHeaders(options?.headers!, { 'api-key': apiKey })
-        }
-      : options
-    const response = await fetcher(input, init)
+    try {
+      const input = baseUrl ? combineURLs(baseUrl, url) : url
+      const response = await fetcher(input, options)
+      const isJson = response.headers
+        .get('content-type')
+        ?.startsWith('application/json')
+      const data = isJson ? await response.json() : await response.text()
 
-    const isJson = response.headers
-      .get('content-type')
-      ?.startsWith('application/json')
-    const data = isJson ? await response.json() : await response.text()
+      if (!response.ok) {
+        throw new FetcherError(data, response.status)
+      }
 
-    if (!response.ok) {
-      throw new FetcherError(data, response.status)
+      return data as T
+    } catch (err) {
+      const { message, messages } = err as FetcherError
+      if (isDev && messages && messages[0] === 'no token provided') {
+        deleteCookie('api_key')
+      }
+      errorNotification(messages ?? message)
     }
-
-    return data as T
   }
 }
 
 export const fetcher = createFetcher(fetch)
-export const authFetcher = isDev
-  ? createFetcher(fetch, baseUrl, apiKey)
-  : createFetcher(authFetch)
+export const authFetcher = createFetcher(fetch, baseUrl)

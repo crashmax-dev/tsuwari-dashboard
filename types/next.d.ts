@@ -13,8 +13,6 @@ declare module 'next' {
 
 declare module 'next/app' {
   export type AppLayoutProps<P = {}> = AppProps<P> & {
-    locale: string
-    colorScheme: ColorScheme
     Component: PageLayoutProps<P>
-  }
+  } & P
 }

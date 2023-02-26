@@ -1,5 +1,13 @@
 {
   "sidebar": {
     "manage": "Manage channel"
+  },
+  "error": {
+    "title": "Page not found",
+    "leave": "Go to home"
+  },
+  "dev": {
+    "api_key": "Add your Api key",
+    "api_key_valid": "Api key is valid. Owner by {{user}}"
   }
 }

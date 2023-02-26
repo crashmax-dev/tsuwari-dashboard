@@ -1,7 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { commandsConfig } from '@/features/dashboard/commands'
-import { CommandsPage } from '@/features/dashboard/commands'
+import { commandsConfig } from '@/features/commands'
+import { CommandsPage } from '@/features/commands'
 import { DashboardLayout } from '@/layouts/dashboard'
+import { getCookie } from '@/libs/cookie'
 import type {
   GetServerSideProps,
   InferGetServerSidePropsType,
@@ -10,18 +11,16 @@ import type {
 
 interface Props {}
 
-const CustomCommandsRoute: PageLayoutProps<Props> = (
+const CommandsRoute: PageLayoutProps<Props> = (
   props: InferGetServerSidePropsType<typeof getServerSideProps>
 ) => {
   return <CommandsPage />
 }
 
 export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  // TODO: prefetching data
-  const commandsModule = ctx.query.module as string
-
   return {
     props: {
+      apiKey: getCookie('api_key', ctx),
       ...(await serverSideTranslations(
         ctx.locale!,
         commandsConfig.i18nNamespaces
@@ -30,8 +29,8 @@ export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
   }
 }
 
-CustomCommandsRoute.getLayout = (page: React.ReactNode) => {
+CommandsRoute.getLayout = (page: React.ReactNode) => {
   return <DashboardLayout>{page}</DashboardLayout>
 }
 
-export default CustomCommandsRoute
+export default CommandsRoute

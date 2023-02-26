@@ -1,12 +1,14 @@
 export class FetcherError extends Error {
-  messages?: string
+  messages?: string[]
   status: number
 
-  constructor(data: string | Record<string, any>, status: number) {
+  constructor(data: string | Record<string, string[]>, status: number) {
     super(typeof data === 'string' ? data : 'Query error')
+
     if (typeof data === 'object') {
-      this.messages = data.messages
+      this.messages = data.message ?? data.messages
     }
+
     this.status = status
   }
 }

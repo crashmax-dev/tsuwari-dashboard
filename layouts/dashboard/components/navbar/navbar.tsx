@@ -8,22 +8,22 @@ import {
   Flex,
   Group,
   Header,
-  Loader,
   Menu,
   Text
 } from '@mantine/core'
 import { IconLanguage, IconMoonStars, IconSun } from '@tabler/icons'
 import { LOCALES, useLocale } from '@/hooks/useLocale'
 import { useTheme } from '@/hooks/useTheme'
+import { Profile } from '../profile'
 import { useNavbarStyles } from './navbar.styles'
 
-export function NavBar({
+export const NavBar = ({
   opened,
   setOpened
 }: {
   setOpened: Dispatch<SetStateAction<boolean>>
   opened: boolean
-}) {
+}) => {
   const { classes } = useNavbarStyles()
   const { theme, colorScheme, toggleColorScheme } = useTheme()
   const { currentLocale, toggleLocale } = useLocale()
@@ -118,7 +118,7 @@ export function NavBar({
               ))}
             </Menu.Dropdown>
           </Menu>
-          <Loader />
+          <Profile />
         </Group>
       </Container>
     </Header>

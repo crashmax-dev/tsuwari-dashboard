@@ -1,5 +1,14 @@
 import { NotificationsProvider as MantineNotifications } from '@mantine/notifications'
 
-export function NotificationsProvider({ children }: React.PropsWithChildren) {
-  return <MantineNotifications>{children}</MantineNotifications>
+export const NotificationsProvider = ({
+  children
+}: React.PropsWithChildren) => {
+  return (
+    <MantineNotifications
+      position="top-center"
+      limit={3}
+    >
+      {children}
+    </MantineNotifications>
+  )
 }

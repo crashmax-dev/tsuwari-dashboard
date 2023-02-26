@@ -8,6 +8,21 @@ const nextConfig = {
   experimental: {
     esmExternals: true,
     appDir: false
+  },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        has: [
+          {
+            type: 'cookie',
+            key: 'api_key'
+          }
+        ],
+        permanent: false,
+        destination: '/dashboard'
+      }
+    ]
   }
 }
 

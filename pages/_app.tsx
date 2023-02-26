@@ -3,16 +3,27 @@ import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
-import { getCookie, setCookie } from 'cookies-next'
-import { Provider } from 'jotai'
+import { useHydrateAtoms } from 'jotai/utils'
+import { apiKeyAtom } from '@/hooks/useProfile'
+import { getCookie, setCookie } from '@/libs/cookie'
 import { NotificationsProvider } from '@/libs/notification/provider'
 import i18nConfig from '../next-i18next.config'
 import type { ColorScheme } from '@mantine/core'
-import type { GetServerSidePropsContext } from 'next'
+import type { NextPageContext } from 'next'
 import type { AppLayoutProps } from 'next/app'
 
-function App(props: AppLayoutProps) {
+interface Props {
+  locale: string
+  colorScheme: ColorScheme
+  dashboardId: string
+  apiKey?: string
+}
+
+const App = (props: AppLayoutProps<Props>) => {
   const { Component, pageProps } = props
+
+  useHydrateAtoms([[apiKeyAtom, pageProps.apiKey ?? '']])
+
   const getLayout = Component.getLayout ?? ((page) => page)
 
   const preferenceColorScheme = useColorScheme(undefined, {
@@ -58,7 +69,7 @@ function App(props: AppLayoutProps) {
           withNormalizeCSS
         >
           <NotificationsProvider>
-            <Provider>{getLayout(<Component {...pageProps} />)}</Provider>
+            {getLayout(<Component {...pageProps} />)}
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
@@ -66,10 +77,11 @@ function App(props: AppLayoutProps) {
   )
 }
 
-App.getInitialProps = async ({ ctx }: { ctx: GetServerSidePropsContext }) => {
+App.getInitialProps = ({ ctx }: { ctx: NextPageContext }) => {
   return {
     locale: getCookie('locale', ctx),
-    colorScheme: getCookie('color_scheme', ctx)
+    colorScheme: getCookie('color_scheme', ctx),
+    dashboardId: getCookie('dashboard_id', ctx)
   }
 }
 

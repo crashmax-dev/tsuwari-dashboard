@@ -1,4 +1,4 @@
-export function combineHeaders(...sources: HeadersInit[]): Headers {
+export const combineHeaders = (...sources: HeadersInit[]): Headers => {
   const result: Record<string, string> = {}
 
   for (const source of sources) {
