@@ -8,7 +8,7 @@ specifiers:
   '@mantine/hooks': 5.10.5
   '@mantine/next': 5.10.5
   '@mantine/notifications': 5.10.5
-  '@tabler/icons': 2.5.0
+  '@tabler/icons': 1.119.0
   '@tsuwari/shared': 0.0.0-beta.0
   '@tsuwari/typeorm': 0.0.0-beta.0
   '@types/node': 18.14.1
@@ -32,7 +32,7 @@ dependencies:
   '@mantine/hooks': 5.10.5_react@18.2.0
   '@mantine/next': 5.10.5_pgglsq75fvw45j476lnzqmxl6q
   '@mantine/notifications': 5.10.5_7l7cohgiq6l4ncfy2pvlz3brzy
-  '@tabler/icons': 2.5.0
+  '@tabler/icons': 1.119.0_biqbaboplfbrettd7655fr4n2y
   cookies-next: 2.1.1
   country-flag-icons: 1.5.5
   i18next: 22.4.10
@@ -1009,8 +1009,19 @@ packages:
       tslib: 2.5.0
     dev: false
 
-  /@tabler/icons/2.5.0:
-    resolution: {integrity: sha512-gQceaW6itR2Wna2Kqcrxz3gm2cNxwg/DCgT17W1N9la4Iri1r9g681uO2LryDskGXfs71Trhd3CtrED/T6dzUQ==}
+  /@tabler/icons/1.119.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-Fk3Qq4w2SXcTjc/n1cuL5bccPkylrOMo7cYpQIf/yw6zP76LQV9dtLcHQUjFiUnaYuswR645CnURIhlafyAh9g==}
+    peerDependencies:
+      react: ^16.x || 17.x || 18.x
+      react-dom: ^16.x || 17.x || 18.x
+    peerDependenciesMeta:
+      react:
+        optional: true
+      react-dom:
+        optional: true
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@tsconfig/node10/1.0.9:
