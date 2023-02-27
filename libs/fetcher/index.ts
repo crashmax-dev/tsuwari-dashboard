@@ -1,4 +1,4 @@
-import { accessTokenKey, baseUrl, isDev, isSsr } from '@/app/config'
+import { accessTokenKey, baseUrl, isDev, apiKey, isSsr } from '@/app/config'
 import { deleteCookie } from '@/libs/cookie'
 import { errorNotification } from '@/libs/notification'
 import { combineHeaders } from './combineHeaders'
@@ -54,7 +54,12 @@ const createFetcher = (fetcher: typeof fetch, baseUrl?: string | null) => {
 
     try {
       const input = baseUrl ? combineURLs(baseUrl, url) : url
-      const response = await fetcher(input, options)
+      const init = isDev ? {
+        ...options, headers: combineHeaders(options?.headers ?? {}, {
+          'api-key': apiKey!
+        })
+      } : options
+      const response = await fetcher(input, init)
       const isJson = response.headers
         .get('content-type')
         ?.startsWith('application/json')
@@ -67,9 +72,6 @@ const createFetcher = (fetcher: typeof fetch, baseUrl?: string | null) => {
       return data as T
     } catch (err) {
       const { message, messages } = err as FetcherError
-      if (isDev && messages && messages[0] === 'no token provided') {
-        deleteCookie('api_key')
-      }
       errorNotification(messages ?? message)
     }
   }

@@ -1,29 +1,19 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { dashboardConfig } from '@/features/dashboard'
 import { DashboardPage } from '@/features/dashboard'
 import { DashboardLayout } from '@/layouts/dashboard'
-import { getCookie } from '@/libs/cookie'
 import type { GetServerSideProps, PageLayoutProps } from 'next'
 import type { InferGetStaticPropsType } from 'next'
+import { getI18nProps } from '@/libs/i18n'
 
 interface Props {}
 
 const DashboardRoute: PageLayoutProps<Props> = (
-  props: InferGetStaticPropsType<typeof getServerSideProps>
+  props: InferGetStaticPropsType<typeof getStaticProps>
 ) => {
   return <DashboardPage />
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
-  return {
-    props: {
-      apiKey: getCookie('api_key', ctx),
-      ...(await serverSideTranslations(
-        ctx.locale!,
-        dashboardConfig.i18nNamespaces
-      ))
-    }
-  }
+export const getStaticProps: GetServerSideProps = async (ctx) => {
+  return await getI18nProps(ctx, ['dashboard', 'layout'])
 }
 
 DashboardRoute.getLayout = (page: React.ReactNode) => {

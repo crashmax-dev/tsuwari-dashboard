@@ -1,12 +1,11 @@
-import { useTranslation } from 'next-i18next'
 import { Box, Text } from '@mantine/core'
-import { commandsConfig } from './commands.config'
+import { useI18n } from 'next-rosetta'
 
 export const CommandsPage = () => {
-  const { t } = useTranslation(commandsConfig.i18nNamespaces)
+  const { t } = useI18n()
   return (
     <Box>
-      <Text>{t('commands:title')}</Text>
+      <Text>{t('commands.title')}</Text>
     </Box>
   )
 }

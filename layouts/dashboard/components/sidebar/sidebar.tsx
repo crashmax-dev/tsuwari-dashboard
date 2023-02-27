@@ -1,13 +1,13 @@
-// import { useTranslation } from 'next-i18next'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Box, Navbar, NavLink, ScrollArea } from '@mantine/core'
+import { Text, Box, Navbar, NavLink, ScrollArea, UnstyledButton, Group, Avatar } from '@mantine/core'
 import { useViewportSize } from '@mantine/hooks'
 import { dashboardConfig } from '@/features/dashboard'
 import { useLocale } from '@/hooks/useLocale'
-// import { layoutConfig } from '../layout/layout.config'
 import { useSidebarStyles } from './sidebar.styles'
 import type { NavigationLink } from '@/features/dashboard'
+import { useTheme } from '@/hooks'
+import { useI18n } from 'next-rosetta'
 
 interface Props {
   opened: boolean
@@ -20,7 +20,8 @@ export const SideBar = (props: Props) => {
   const { currentLocale } = useLocale()
   const viewPort = useViewportSize()
   const router = useRouter()
-  // const { t } = useTranslation(layoutConfig.i18nNamespaces);
+  const { theme } = useTheme()
+  const { t } = useI18n();
 
   const computeActive = (item: NavigationLink) => {
     if (item.subLinks) {
@@ -96,6 +97,43 @@ export const SideBar = (props: Props) => {
             {links}
           </Box>
         </ScrollArea.Autosize>
+        <Navbar.Section>
+          <Box
+            sx={{
+              padding: theme.spacing.sm,
+              borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
+                }`,
+            }}
+          >
+            <UnstyledButton
+              sx={{
+                display: 'block',
+                width: '100%',
+                padding: theme.spacing.xs,
+                borderRadius: theme.radius.sm,
+                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+
+                '&:hover': {
+                  backgroundColor:
+                    theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+                },
+              }}
+            // onClick={openSpotlight}
+            >
+              <Group>
+                {/* <Avatar src="" radius="xl" /> */}
+                <Box sx={{ flex: 1 }}>
+                  <Text size="xs" weight={500}>
+                    {t('layout.sidebar.manage')}
+                  </Text>
+                  <Text color="dimmed" size="xs">
+                    VS_Code
+                  </Text>
+                </Box>
+              </Group>
+            </UnstyledButton>
+          </Box>
+        </Navbar.Section>
       </Navbar.Section>
     </Navbar>
   )

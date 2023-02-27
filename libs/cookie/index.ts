@@ -9,7 +9,7 @@ export const getCookie = <T = string>(
   key: string,
   options?: OptionsType
 ): T => {
-  return get(key, options) as T
+  return (get(key, options) ?? '') as T
 }
 
 export const setCookie = (

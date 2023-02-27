@@ -12,7 +12,7 @@ import type songRequestSettings from './en/song-requests-settings.json'
 import type timers from './en/timers.json'
 import type variables from './en/variables.json'
 
-export interface I18nResources {
+export type Locales = {
   commands: typeof commands
   common: typeof common
   dashboard: typeof dasboard

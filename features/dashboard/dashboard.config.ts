@@ -17,7 +17,6 @@ import {
   IconSword,
   IconUsers
 } from '@tabler/icons'
-import type { I18nActiveNamespaces } from '@/libs/i18n'
 import type { TablerIcon } from '@tabler/icons'
 
 export interface NavigationLink {
@@ -28,14 +27,10 @@ export interface NavigationLink {
 }
 
 export type DashboardConfig = {
-  // Define namespaces in use in both the type and the config.
-  i18nNamespaces: I18nActiveNamespaces<'dashboard' | 'layout'>
   navigationLinks: NavigationLink[]
 }
 
 export const dashboardConfig: DashboardConfig = {
-  /** Namespaces that should be loaded for this page */
-  i18nNamespaces: ['dashboard', 'layout'],
   navigationLinks: [
     { label: 'Dashboard', icon: IconDashboard, path: '/' },
     { label: 'Integrations', icon: IconBox, path: '/integrations' },

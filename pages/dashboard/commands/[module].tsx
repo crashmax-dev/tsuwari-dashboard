@@ -1,32 +1,43 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { commandsConfig } from '@/features/commands'
 import { CommandsPage } from '@/features/commands'
 import { DashboardLayout } from '@/layouts/dashboard'
-import { getCookie } from '@/libs/cookie'
 import type {
   GetServerSideProps,
+  GetStaticPaths,
   InferGetServerSidePropsType,
   PageLayoutProps
 } from 'next'
+import { getI18nProps } from '@/libs/i18n'
 
 interface Props {}
 
 const CommandsRoute: PageLayoutProps<Props> = (
-  props: InferGetServerSidePropsType<typeof getServerSideProps>
+  props: InferGetServerSidePropsType<typeof getStaticProps>
 ) => {
   return <CommandsPage />
 }
 
-export const getServerSideProps: GetServerSideProps<Props> = async (ctx) => {
+export const getStaticPaths: GetStaticPaths = () => {
   return {
-    props: {
-      apiKey: getCookie('api_key', ctx),
-      ...(await serverSideTranslations(
-        ctx.locale!,
-        commandsConfig.i18nNamespaces
-      ))
-    }
+    paths: [
+      {
+        params: {
+          module: 'custom',
+          locale: 'ru'
+        }
+      },
+      {
+        params: {
+          module: 'custom',
+          locale: 'en'
+        }
+      }
+    ],
+    fallback: true
   }
+}
+
+export const getStaticProps: GetServerSideProps = async (ctx) => {
+  return await getI18nProps(ctx, ['commands', 'layout'])
 }
 
 CommandsRoute.getLayout = (page: React.ReactNode) => {

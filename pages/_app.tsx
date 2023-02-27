@@ -1,13 +1,10 @@
-import { appWithTranslation } from 'next-i18next'
+import { I18nProvider } from 'next-rosetta'
 import Head from 'next/head'
-import { useEffect, useState } from 'react'
-import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
+import { Suspense, useEffect, useState } from 'react'
+import { ColorSchemeProvider, Loader, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
-import { useHydrateAtoms } from 'jotai/utils'
-import { apiKeyAtom } from '@/hooks/useProfile'
 import { getCookie, setCookie } from '@/libs/cookie'
 import { NotificationsProvider } from '@/libs/notification/provider'
-import i18nConfig from '../next-i18next.config'
 import type { ColorScheme } from '@mantine/core'
 import type { NextPageContext } from 'next'
 import type { AppLayoutProps } from 'next/app'
@@ -17,13 +14,11 @@ interface Props {
   colorScheme: ColorScheme
   dashboardId: string
   apiKey?: string
+  i18n: any
 }
 
 const App = (props: AppLayoutProps<Props>) => {
   const { Component, pageProps } = props
-
-  useHydrateAtoms([[apiKeyAtom, pageProps.apiKey ?? '']])
-
   const getLayout = Component.getLayout ?? ((page) => page)
 
   const preferenceColorScheme = useColorScheme(undefined, {
@@ -68,9 +63,11 @@ const App = (props: AppLayoutProps<Props>) => {
           withGlobalStyles
           withNormalizeCSS
         >
-          <NotificationsProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </NotificationsProvider>
+          <I18nProvider table={pageProps.i18n}>
+            <NotificationsProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </NotificationsProvider>
+          </I18nProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
@@ -85,4 +82,4 @@ App.getInitialProps = ({ ctx }: { ctx: NextPageContext }) => {
   }
 }
 
-export default appWithTranslation(App, i18nConfig)
+export default App

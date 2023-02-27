@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getCookie, setCookie } from 'cookies-next'
 import { RU, US } from 'country-flag-icons/react/3x2'
-import { i18n } from '../next-i18next.config'
+import { i18n } from '../next.config'
 
 const DEFAULT_LOCALE = 'en'
 const LOCALE_COOKIE_KEY = 'locale'
@@ -28,7 +28,7 @@ export const useLocale = () => {
       toggleLocale()
     }
 
-    if (i18n.locales.includes(locale)) {
+    if (i18n!.locales.includes(locale)) {
       const { pathname, asPath, query } = router
       if (query.code || query.token) return
       router.push({ pathname, query }, asPath, { locale })
@@ -39,7 +39,7 @@ export const useLocale = () => {
 
   return {
     currentLocale: locale,
-    locales: i18n.locales,
+    locales: i18n!.locales,
     toggleLocale
   }
 }

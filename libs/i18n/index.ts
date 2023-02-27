@@ -1,1 +1,1 @@
-export * from './i18nNamespaces'
+export * from './getI18nProps'
