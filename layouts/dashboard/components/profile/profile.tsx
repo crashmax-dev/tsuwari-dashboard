@@ -12,7 +12,7 @@ export const Profile = () => {
   return (
     <div>
       <Menu
-        transition="pop"
+        transitionProps={{ transition: 'pop' }}
         shadow="md"
         withArrow
         width={200}

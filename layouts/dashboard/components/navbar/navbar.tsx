@@ -87,7 +87,7 @@ export const NavBar = ({
             )}
           </ActionIcon>
           <Menu
-            transition="pop"
+            transitionProps={{ transition: 'pop' }}
             shadow="md"
             withArrow
             width={200}

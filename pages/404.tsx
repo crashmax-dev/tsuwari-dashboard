@@ -1,12 +1,11 @@
-import { useI18n } from 'next-rosetta'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
 import { Anchor, Flex, Modal, Text } from '@mantine/core'
-import { DashboardConfig } from '@/features/dashboard'
 import { getI18nProps } from '@/libs/i18n'
-import type { GetServerSideProps } from 'next'
+import type { GetStaticProps } from 'next'
 
-const Custom404 = () => {
-  const { t } = useI18n()
+export default function Custom404() {
+  const t = useTranslations('layout')
   const router = useRouter()
 
   return (
@@ -21,7 +20,7 @@ const Custom404 = () => {
         align="center"
         direction="column"
       >
-        <Text size="lg">{t('layout.error.title')}</Text>
+        <Text size="lg">{t('error.title')}</Text>
         <Anchor
           href="/"
           onClick={(event) => {
@@ -29,15 +28,17 @@ const Custom404 = () => {
             router.push('/dashboard')
           }}
         >
-          {t('layout.error.leave')}
+          {t('error.leave')}
         </Anchor>
       </Flex>
     </Modal>
   )
 }
 
-export const getStaticProps: GetServerSideProps = async (ctx) => {
-  return await getI18nProps(ctx, ['dashboard', 'layout'])
+export const getStaticProps: GetStaticProps = async (ctx) => {
+  return {
+    props: {
+      ...(await getI18nProps(ctx, ['dashboard']))
+    }
+  }
 }
-
-export default Custom404

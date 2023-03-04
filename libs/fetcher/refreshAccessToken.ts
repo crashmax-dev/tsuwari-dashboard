@@ -1,4 +1,4 @@
-import { accessTokenKey } from '@/app/config'
+import { accessTokenKey } from '@/utils/constants'
 
 /**
  * @returns Access token on success or Reponse object on error

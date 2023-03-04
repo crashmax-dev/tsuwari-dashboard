@@ -1,18 +1,12 @@
 import { CommandsPage } from '@/features/commands'
-import { DashboardLayout } from '@/layouts/dashboard'
-import type {
-  GetServerSideProps,
-  GetStaticPaths,
-  InferGetServerSidePropsType,
-  PageLayoutProps
-} from 'next'
 import { getI18nProps } from '@/libs/i18n'
+import type { GetStaticPaths, GetStaticProps, InferGetServerSidePropsType } from 'next'
 
 interface Props {}
 
-const CommandsRoute: PageLayoutProps<Props> = (
+export default function CommandsRoute(
   props: InferGetServerSidePropsType<typeof getStaticProps>
-) => {
+) {
   return <CommandsPage />
 }
 
@@ -20,15 +14,15 @@ export const getStaticPaths: GetStaticPaths = () => {
   return {
     paths: [
       {
+        locale: 'ru',
         params: {
-          module: 'custom',
-          locale: 'ru'
-        }
+          module: 'custom'
+        },
       },
       {
+        locale: 'en',
         params: {
-          module: 'custom',
-          locale: 'en'
+          module: 'custom'
         }
       }
     ],
@@ -36,12 +30,10 @@ export const getStaticPaths: GetStaticPaths = () => {
   }
 }
 
-export const getStaticProps: GetServerSideProps = async (ctx) => {
-  return await getI18nProps(ctx, ['commands', 'layout'])
+export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
+  return {
+    props: {
+      ...(await getI18nProps(ctx, ['commands']))
+    }
+  }
 }
-
-CommandsRoute.getLayout = (page: React.ReactNode) => {
-  return <DashboardLayout>{page}</DashboardLayout>
-}
-
-export default CommandsRoute

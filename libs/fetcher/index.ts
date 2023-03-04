@@ -1,6 +1,11 @@
-import { accessTokenKey, baseUrl, isDev, apiKey, isSsr } from '@/app/config'
-import { deleteCookie } from '@/libs/cookie'
 import { errorNotification } from '@/libs/notification'
+import {
+  accessTokenKey,
+  apiKey,
+  baseUrl,
+  isDev,
+  isServer
+} from '@/utils/constants'
 import { combineHeaders } from './combineHeaders'
 import { combineURLs } from './combineURLs'
 import { FetcherError } from './FetcherError'
@@ -50,15 +55,18 @@ export const authFetch = async (
 
 const createFetcher = (fetcher: typeof fetch, baseUrl?: string | null) => {
   return async <T = any>(url: string, options?: RequestInit) => {
-    if (isSsr) return
+    if (isServer()) return
 
     try {
       const input = baseUrl ? combineURLs(baseUrl, url) : url
-      const init = isDev ? {
-        ...options, headers: combineHeaders(options?.headers ?? {}, {
-          'api-key': apiKey!
-        })
-      } : options
+      const init = isDev()
+        ? {
+            ...options,
+            headers: combineHeaders(options?.headers ?? {}, {
+              'api-key': apiKey!
+            })
+          }
+        : options
       const response = await fetcher(input, init)
       const isJson = response.headers
         .get('content-type')

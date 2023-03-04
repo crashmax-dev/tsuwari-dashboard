@@ -1,26 +1,27 @@
-import { I18nProvider } from 'next-rosetta'
+import { NextIntlProvider } from 'next-intl'
 import Head from 'next/head'
-import { Suspense, useEffect, useState } from 'react'
-import { ColorSchemeProvider, Loader, MantineProvider } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { ColorSchemeProvider, MantineProvider } from '@mantine/core'
 import { useColorScheme } from '@mantine/hooks'
+import { Notifications } from '@mantine/notifications'
 import { getCookie, setCookie } from '@/libs/cookie'
-import { NotificationsProvider } from '@/libs/notification/provider'
 import type { ColorScheme } from '@mantine/core'
-import type { NextPageContext } from 'next'
-import type { AppLayoutProps } from 'next/app'
+import type { AppContext, AppProps } from 'next/app'
+import { DashboardLayout } from '@/layouts/dashboard'
 
-interface Props {
+interface PageProps {
+  i18n: IntlMessages
+}
+
+interface Props extends AppProps<PageProps> {
   locale: string
   colorScheme: ColorScheme
   dashboardId: string
-  apiKey?: string
-  i18n: any
+  apiKey: string
 }
 
-const App = (props: AppLayoutProps<Props>) => {
+function App(props: Props) {
   const { Component, pageProps } = props
-  const getLayout = Component.getLayout ?? ((page) => page)
-
   const preferenceColorScheme = useColorScheme(undefined, {
     getInitialValueInEffect: true
   })
@@ -63,22 +64,27 @@ const App = (props: AppLayoutProps<Props>) => {
           withGlobalStyles
           withNormalizeCSS
         >
-          <I18nProvider table={pageProps.i18n}>
-            <NotificationsProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </NotificationsProvider>
-          </I18nProvider>
+          <NextIntlProvider messages={pageProps.i18n}>
+            <DashboardLayout>
+              <Component {...pageProps} />
+              <Notifications
+                position="top-center"
+                limit={3}
+              />
+            </DashboardLayout>
+          </NextIntlProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>
   )
 }
 
-App.getInitialProps = ({ ctx }: { ctx: NextPageContext }) => {
+App.getInitialProps = ({ ctx }: AppContext) => {
   return {
     locale: getCookie('locale', ctx),
     colorScheme: getCookie('color_scheme', ctx),
-    dashboardId: getCookie('dashboard_id', ctx)
+    dashboardId: getCookie('dashboard_id', ctx),
+    apiKey: getCookie('apiKey', ctx)
   }
 }
 

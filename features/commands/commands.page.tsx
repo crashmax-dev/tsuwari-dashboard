@@ -1,11 +1,11 @@
+import { useTranslations } from 'next-intl'
 import { Box, Text } from '@mantine/core'
-import { useI18n } from 'next-rosetta'
 
-export const CommandsPage = () => {
-  const { t } = useI18n()
+export function CommandsPage() {
+  const t = useTranslations('commands')
   return (
     <Box>
-      <Text>{t('commands.title')}</Text>
+      <Text>{t('title')}</Text>
     </Box>
   )
 }

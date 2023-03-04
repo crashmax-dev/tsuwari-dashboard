@@ -1,14 +1,19 @@
-import type { GetServerSidePropsContext } from 'next'
+import type { GetServerSidePropsContext, GetStaticPropsContext } from 'next'
 
-export const getI18nProps = async (
-  ctx: GetServerSidePropsContext,
-  namespaces: string[]
+export const getI18nProps = async <
+  T extends keyof Omit<IntlMessages, 'layout'>
+>(
+  ctx: GetStaticPropsContext | GetServerSidePropsContext,
+  namespaces: T[] = []
 ) => {
-  const locale = ctx.locale || ctx.defaultLocale;
-  const locales: Record<string, any> = {}
-  for (const namespace of namespaces) {
-    const { default: data } = await import(`../../locales/${locale}/${namespace}.json`);
-    locales[namespace] = data
+  const locale = ctx.locale || ctx.defaultLocale
+  const i18nTranslations: Record<string, any> = {}
+
+  for (const namespace of ['layout', ...namespaces]) {
+    const data = (await import(`../../locales/${locale}/${namespace}.json`))
+      .default
+    i18nTranslations[namespace] = data
   }
-  return { props: { i18n: locales } };
-};
+
+  return { i18n: i18nTranslations }
+}

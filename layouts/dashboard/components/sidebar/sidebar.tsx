@@ -1,13 +1,22 @@
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Text, Box, Navbar, NavLink, ScrollArea, UnstyledButton, Group, Avatar } from '@mantine/core'
+import {
+  Avatar,
+  Box,
+  Group,
+  Navbar,
+  NavLink,
+  ScrollArea,
+  Text,
+  UnstyledButton
+} from '@mantine/core'
 import { useViewportSize } from '@mantine/hooks'
 import { dashboardConfig } from '@/features/dashboard'
+import { useTheme } from '@/hooks'
 import { useLocale } from '@/hooks/useLocale'
 import { useSidebarStyles } from './sidebar.styles'
 import type { NavigationLink } from '@/features/dashboard'
-import { useTheme } from '@/hooks'
-import { useI18n } from 'next-rosetta'
 
 interface Props {
   opened: boolean
@@ -21,7 +30,7 @@ export const SideBar = (props: Props) => {
   const viewPort = useViewportSize()
   const router = useRouter()
   const { theme } = useTheme()
-  const { t } = useI18n();
+  const t = useTranslations()
 
   const computeActive = (item: NavigationLink) => {
     if (item.subLinks) {
@@ -81,7 +90,7 @@ export const SideBar = (props: Props) => {
     >
       <Navbar.Section grow>
         <ScrollArea.Autosize
-          maxHeight={viewPort.height - 120}
+          mah={viewPort.height - 120}
           type="auto"
           offsetScrollbars={true}
           styles={{
@@ -101,8 +110,11 @@ export const SideBar = (props: Props) => {
           <Box
             sx={{
               padding: theme.spacing.sm,
-              borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-                }`,
+              borderTop: `1px solid ${
+                theme.colorScheme === 'dark'
+                  ? theme.colors.dark[4]
+                  : theme.colors.gray[2]
+              }`
             }}
           >
             <UnstyledButton
@@ -111,22 +123,33 @@ export const SideBar = (props: Props) => {
                 width: '100%',
                 padding: theme.spacing.xs,
                 borderRadius: theme.radius.sm,
-                color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+                color:
+                  theme.colorScheme === 'dark'
+                    ? theme.colors.dark[0]
+                    : theme.black,
 
                 '&:hover': {
                   backgroundColor:
-                    theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-                },
+                    theme.colorScheme === 'dark'
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[0]
+                }
               }}
-            // onClick={openSpotlight}
+              // onClick={openSpotlight}
             >
               <Group>
                 {/* <Avatar src="" radius="xl" /> */}
                 <Box sx={{ flex: 1 }}>
-                  <Text size="xs" weight={500}>
+                  <Text
+                    size="xs"
+                    weight={500}
+                  >
                     {t('layout.sidebar.manage')}
                   </Text>
-                  <Text color="dimmed" size="xs">
+                  <Text
+                    color="dimmed"
+                    size="xs"
+                  >
                     VS_Code
                   </Text>
                 </Box>
